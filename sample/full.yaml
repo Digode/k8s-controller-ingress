@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-not
+  labels:
+    app: nginx-not
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-not
+  template:
+    metadata:
+      labels:
+        app: nginx-not
+    spec:
+      containers:
+      - name: nginx-not
+        image: nginx:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-not
+  labels:
+    app: nginx-not
+spec:
+  selector:
+    app: nginx-not
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-not
+  labels:
+    app: nginx-not
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nginx-not.localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-not
+            port:
+              number: 80

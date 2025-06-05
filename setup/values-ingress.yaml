@@ -1,0 +1,18 @@
+controller:
+  autoscaling:
+    enabled: true
+    maxReplicas: 3
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 90
+    targetMemoryUtilizationPercentage: 90
+  ingressClassByName: true
+  ingressClassResource:
+    controllerValue: k8s.io/public
+    enabled: true
+    name: public
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 25m
+      memory: 140Mi
+  progressDeadlineSeconds: 600
